@@ -9,9 +9,16 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@babel/standalone": "^7.29.1",
+    "@remotion/bundler": "4.0.421",
+    "@remotion/cli": "4.0.421",
+    "@remotion/player": "4.0.421",
+    "@remotion/renderer": "4.0.421",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "remotion": "4.0.421",
+    "zod": "3.22.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
