@@ -69,137 +69,180 @@ export default function Home() {
   }, [rawCode]);
 
   return (
-    <div className="flex h-screen bg-[#0b1215] text-white font-sans">
-      {/* Left panel */}
-      <div className="w-[480px] min-w-[400px] flex flex-col border-r border-white/[0.06]">
+    <div className="flex h-screen bg-[#0a0e12] text-[#e8e8e8]">
+      {/* Left panel — Input */}
+      <div className="w-[440px] min-w-[380px] flex flex-col border-r border-white/[0.06] bg-[#0c1016]">
+        {/* Header */}
         <div className="px-6 py-5 border-b border-white/[0.06]">
-          <h1 className="text-[15px] font-semibold tracking-[-0.01em] text-white/90">
-            Video Creator
-          </h1>
-          <p className="text-[13px] text-white/40 mt-1">
-            Describe your video. Claude writes the code. Remotion renders it.
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-[#e8e8e8]" />
+            <h1
+              className="text-[13px] font-semibold tracking-[-0.02em] uppercase text-white/70"
+              style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
+            >
+              Video Creator
+            </h1>
+          </div>
+          <p className="text-[12px] text-white/30 mt-2 leading-relaxed">
+            Describe a marketing video in plain English. Claude generates the
+            code. Remotion renders it live.
           </p>
         </div>
 
-        <div className="flex-1 p-6 flex flex-col gap-4">
-          <textarea
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder={`Dark background. Large white text fades in: "Stop making boring videos." Pause. Then smaller text slides up: "AI does it in 30 seconds." End with a gradient swoosh and "Built with Claude Code" centered.`}
-            className="flex-1 bg-white/[0.03] rounded-lg p-4 resize-none text-[14px] leading-relaxed border border-white/[0.08] focus:border-white/20 focus:outline-none placeholder:text-white/20 text-white/80"
-          />
-
-          <button
-            onClick={handleGenerate}
-            disabled={loading || !prompt.trim()}
-            className="bg-white text-[#0b1215] rounded-lg py-3 text-[14px] font-semibold disabled:opacity-30 hover:bg-white/90 transition-colors cursor-pointer disabled:cursor-not-allowed"
-          >
-            {loading ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg
-                  className="animate-spin h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                  />
-                </svg>
-                Generating...
-              </span>
-            ) : (
-              "Generate Video"
-            )}
-          </button>
-
-          {videoComponent && (
-            <button
-              onClick={handleExport}
-              disabled={exporting}
-              className="bg-transparent border border-white/[0.12] text-white/70 rounded-lg py-3 text-[14px] font-medium hover:border-white/25 hover:text-white/90 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+        {/* Prompt area */}
+        <div className="flex-1 p-5 flex flex-col gap-4">
+          <div className="flex-1 flex flex-col">
+            <label
+              className="text-[11px] font-medium text-white/30 uppercase tracking-[0.06em] mb-2"
+              style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
             >
-              {exporting ? (
+              Description
+            </label>
+            <textarea
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder={`Dark background. Bold white headline: "Stop making boring videos." Pause 2 seconds. Subtitle slides up: "AI does it in 30 seconds." Final scene: glowing accent ring expands with "Built with Claude" centered.`}
+              className="flex-1 bg-white/[0.02] rounded-md p-4 resize-none text-[14px] leading-[1.7] border border-white/[0.06] focus:border-white/15 focus:outline-none placeholder:text-white/15 text-white/80 transition-colors"
+              style={{ fontFamily: "var(--font-space-grotesk), system-ui" }}
+            />
+          </div>
+
+          {/* Actions */}
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={handleGenerate}
+              disabled={loading || !prompt.trim()}
+              className="bg-[#e8e8e8] text-[#0a0e12] rounded-md py-3 text-[13px] font-semibold tracking-[-0.01em] disabled:opacity-20 hover:bg-white transition-colors cursor-pointer disabled:cursor-not-allowed"
+            >
+              {loading ? (
                 <span className="flex items-center justify-center gap-2">
-                  <svg
-                    className="animate-spin h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                    />
-                  </svg>
-                  Rendering MP4...
+                  <Spinner />
+                  Generating...
                 </span>
               ) : (
-                "Export MP4"
+                "Generate Video"
               )}
             </button>
-          )}
+
+            {videoComponent && (
+              <button
+                onClick={handleExport}
+                disabled={exporting}
+                className="bg-transparent border border-white/[0.08] text-white/50 rounded-md py-3 text-[13px] font-medium hover:border-white/15 hover:text-white/80 transition-colors cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed"
+              >
+                {exporting ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Spinner />
+                    Rendering MP4...
+                  </span>
+                ) : (
+                  "Export MP4"
+                )}
+              </button>
+            )}
+          </div>
 
           {error && (
-            <p className="text-red-400/80 text-[13px] leading-relaxed">
-              {error}
-            </p>
+            <div className="rounded-md bg-red-500/[0.06] border border-red-500/[0.12] px-4 py-3">
+              <p className="text-red-400/80 text-[12px] leading-relaxed">
+                {error}
+              </p>
+            </div>
           )}
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-4 border-t border-white/[0.04]">
+          <p
+            className="text-[10px] text-white/15 tracking-[0.04em]"
+            style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
+          >
+            Claude CLI + Remotion + Babel JIT
+          </p>
         </div>
       </div>
 
-      {/* Right panel — video preview */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-[#080d10]">
-        {videoComponent ? (
-          <div className="w-full max-w-[960px]">
-            <Player
-              component={videoComponent}
-              durationInFrames={300}
-              compositionWidth={1920}
-              compositionHeight={1080}
-              fps={30}
-              controls
-              loop
-              style={{
-                width: "100%",
-                borderRadius: "8px",
-                overflow: "hidden",
-              }}
-            />
-          </div>
-        ) : (
-          <div className="flex flex-col items-center gap-3 text-white/20">
-            <svg
-              width="48"
-              height="48"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
+      {/* Right panel — Preview */}
+      <div className="flex-1 flex flex-col">
+        {/* Preview header */}
+        <div className="px-6 py-4 border-b border-white/[0.04] flex items-center justify-between">
+          <span
+            className="text-[11px] font-medium text-white/25 uppercase tracking-[0.06em]"
+            style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
+          >
+            Preview
+          </span>
+          {videoComponent && (
+            <span
+              className="text-[10px] text-white/20"
+              style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
             >
-              <polygon points="5 3 19 12 5 21 5 3" />
-            </svg>
-            <p className="text-[14px]">Preview will appear here</p>
-          </div>
-        )}
+              1920×1080 · 30fps · 10s
+            </span>
+          )}
+        </div>
+
+        {/* Preview area */}
+        <div className="flex-1 flex items-center justify-center p-8 bg-[#080b0e]">
+          {videoComponent ? (
+            <div className="w-full max-w-[920px]">
+              <Player
+                component={videoComponent}
+                durationInFrames={300}
+                compositionWidth={1920}
+                compositionHeight={1080}
+                fps={30}
+                controls
+                loop
+                style={{
+                  width: "100%",
+                  borderRadius: "4px",
+                  overflow: "hidden",
+                }}
+              />
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-16 h-16 rounded-full border border-white/[0.06] flex items-center justify-center">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  className="text-white/15 ml-0.5"
+                >
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+              </div>
+              <p className="text-[13px] text-white/15">
+                Preview will appear here
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
+  );
+}
+
+function Spinner() {
+  return (
+    <svg className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
+      <circle
+        className="opacity-20"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="3"
+      />
+      <path
+        className="opacity-80"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+      />
+    </svg>
   );
 }

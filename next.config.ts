@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  basePath: "/david/marketing-video-creator",
+  basePath: "/pablo/marketing-video-creator",
   serverExternalPackages: [
     "@remotion/bundler",
     "@remotion/renderer",
